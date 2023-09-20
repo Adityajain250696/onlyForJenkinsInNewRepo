@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="only_for_jenkins_in_new_repo-suite.xml" />
+	<munit:test name="only_for_jenkins_in_new_repoFlow-test" doc:id="066c82cd-b134-411d-a4c5-88b4393b2d5d" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="7b7574f3-a8cd-4eba-a7b5-289d32385736" >
+				<munit:payload value="#[output application/json  --- readUrl('classpath://onlyforjenkinsinnewrepoFlowtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json " />
+				<munit:attributes value="#[readUrl('classpath://onlyforjenkinsinnewrepoFlowtest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to only_for_jenkins_in_new_repoFlow" doc:id="e781e7d4-533b-4e75-8da4-edcb466fef46" name="only_for_jenkins_in_new_repoFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="9e3c43cc-5916-4f4c-a825-676430fab597" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import onlyforjenkinsinnewrepoFlowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
